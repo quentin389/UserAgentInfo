@@ -12,7 +12,7 @@
  * 
  * 3) ua-parser (uap) with data from BrowserScope - https://github.com/tobie/ua-parser - provides good generic information about all types of browsers
  * 
- * 4) Some information is generated directly to UserAgentInfo. Currently those are two things:
+ * 4) Some information is generated directly in UserAgentInfo. Currently those are two things:
  *    a) Additional user agents identified in browscap format (see BrowscapWrapper class).
  *    b) Browser and operating system architecture information (see self::parseArchitecture()).
  * 
