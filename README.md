@@ -1,4 +1,7 @@
-See [changelog file](CHANGELOG.md) for a list of changes.
+See **[changelog file](CHANGELOG.md)** for a list of changes.
+
+UserAgentInfo uses other project to get the data it needs.
+See **[list of those projects](#relation-to-other-projects)**.
 
 UserAgentInfo
 =============
@@ -7,7 +10,7 @@ PHP class for parsing user agent strings (HTTP_USER_AGENT). Includes mobile chec
 
 **please note:**
 
-Right now the project is taken directly from the version that works on my website, so there are probably some things I should change to make it easier to adapt in other projects (see todo list).
+Right now the project is taken directly from the version that works on my website, so there are probably some things I should change to make it easier to adapt in other projects (see [todo list](#todo-list)).
 
 
 Why another user agent detection class?
@@ -76,9 +79,11 @@ if ($ua->isMobile() && !$ua->isMobileAndroid() && !$ua->isMobileAppleIos())
 
 Relation to other projects
 ----------------------------------
-User agent information is retrieved from four sources:
+UserAgentInfo relies on multiple other projects to get its user agent information. Thanks to that it offers detection better than any other project that relies on its own parser, or only a single external parser.
 
-- browscap (bc) - http://tempdownloads.browserscap.com/ - browscap contains a huge database of incredibly detailed specific user agents information but it sucks with newer user agents and even more sucks for mobile detection.
+The used projects are:
+
+- browscap (bc) - http://tempdownloads.browserscap.com/ - browscap contains a huge database of incredibly detailed specific user agents information but it sucks with newer user agents and sucks even more for mobile detection.
 
 - Mobile_Detect (md) - https://github.com/serbanghita/Mobile-Detect - it detects mobile device types with very high precision.
 
