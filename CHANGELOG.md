@@ -1,7 +1,13 @@
+
+See **[readme](README.md)** for important information about this project.
+
+UserAgentInfo uses other project to get the data it needs.
+See **[list of those projects](README.md#relation-to-other-projects)**.
+
 Changelog
 =========
 
-### august 4, 2013 - version 1.1
+### version 1.1 - august 4, 2013
 
 - Updated Mobile_Detect.php from version 2.6.3 to 2.6.6:
   - New detection rules.
