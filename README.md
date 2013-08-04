@@ -1,4 +1,3 @@
-
 See [changelog file](CHANGELOG.md) for a list of changes.
 
 UserAgentInfo
@@ -91,15 +90,15 @@ User agent information is retieved from four sources:
 
 Todo list
 ---------------------------
-- [ ] update source parsers once a week
-- [ ] important (performance!) - do not init anything but required part of Mobile_Detect before checking user agent in cache 
-- [ ] should I standarize OS name and move Windows version to ->version?
-- [ ] should device family be changed to device manufacturer and version to name (same as in full browscap)?
-- [ ] request to add version number to browscap get_browser()
-- [ ] request to add version number to uaparser json file
-- [ ] test full browscap file and see if it makes sense to use it
-- [ ] should browscap be moved fully to PHP as in https://github.com/garetjax/phpbrowscap ?
-- [ ] It would make sense to get rid of the php.ini setting requirement and just be able to fully control what data is served from browscap.
-- [ ] make a simple html page to test all user agents from user-agent-examples.txt
-- [ ] include files (do not rely on autoload)
-- [ ] see which PHP version is required to run the script. PHP 5.0 would be the best, there is no need to push for 5.3. However, right now it may not be compatible with older PHP versions, as it was created on PHP 5.4.
+- update source parsers once a week
+- important (performance!) - do not init anything but required part of Mobile_Detect before checking user agent in cache 
+- should I standarize OS name and move Windows version to ->version?
+- should device family be changed to device manufacturer and version to name (same as in full browscap)?
+- request to add version number to browscap get_browser()
+- request to add version number to uaparser json file
+- test full browscap file and see if it makes sense to use it
+- should browscap be moved fully to PHP as in https://github.com/garetjax/phpbrowscap ?
+- It would make sense to get rid of the php.ini setting requirement and just be able to fully control what data is served from browscap.
+- make a simple html page to test all user agents from user-agent-examples.txt
+- include files (do not rely on autoload)
+- see which PHP version is required to run the script. PHP 5.0 would be the best, there is no need to push for 5.3. However, right now it may not be compatible with older PHP versions, as it was created on PHP 5.4.
