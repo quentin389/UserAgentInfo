@@ -1,3 +1,6 @@
+
+See [changelog file](CHANGELOG.md) for a list of changes.
+
 UserAgentInfo
 =============
 
