@@ -43,6 +43,7 @@
  * 
  * @link https://github.com/quentin389/UserAgentInfo
  * 
+ * @todo test what will change if I move browscap browser types detection to the first place instead of last (use all the user agents)
  * @todo important (performance!) - do not init anything but required part of Mobile_Detect before checking user agent in cache 
  * @todo should I standarize OS name and move Windows version to ->version?
  * @todo should device family be changed to device manufacturer and version to name (same as in full browscap)?
@@ -51,6 +52,8 @@
  * @todo test full browscap file and see if it makes sense to use it
  * @todo should browscap be moved fully to PHP as in https://github.com/garetjax/phpbrowscap ?
  *   It would make sense to get rid of the php.ini setting requirement and just be able to fully control what data is served from browscap.
+ *   If I'm gonna parse browscap.ini I should merge identical entries with just version changed - I'm gonna match using pregs anyway so there is
+ *   no need to have 20 entries instead of 1.
  * @todo make a simple html page to test all user agents from user-agent-examples.txt
  * @todo include files (do not rely on autoload)
  * @todo see which PHP version is required to run the script
@@ -64,7 +67,7 @@ class UserAgentInfoPeer
    * 
    * @var integer
    */
-  const CLASS_PARSER_VERSION = 1;
+  const CLASS_PARSER_VERSION = 2;
   
   /**
    * String to show when something is 64 bit
@@ -110,9 +113,9 @@ class UserAgentInfoPeer
   /**
    * Mobile grades as defined in Mobile_Detect
    */
-  const MOBILE_GRADE_A = 'A';
-  const MOBILE_GRADE_B = 'B';
-  const MOBILE_GRADE_C = 'C';
+  const MOBILE_GRADE_A = Mobile_Detect::MOBILE_GRADE_A;
+  const MOBILE_GRADE_B = Mobile_Detect::MOBILE_GRADE_B;
+  const MOBILE_GRADE_C = Mobile_Detect::MOBILE_GRADE_C;
   const MOBILE_GRADE_UNKNOWN = '';
   
   /**
@@ -306,15 +309,13 @@ class UserAgentInfoPeer
       return;
     }
     
-    self::$mobile_detect = new Mobile_Detect();
-    
-    // Mobile_Detect uses some additional http headers to get user-agent, so it's the best place we can get current user-agent from
-    self::$my_user_agent = self::$mobile_detect->getUserAgent();
-    
     // for the sake of clarity we just ignore all the additional headers used by Mobile_Detect in anything but ->getUserAgent().
     // this way the information we get for any user agent string will always be the same, whether we pass it as an arbitrary string
     // or take from a current user.
-    self::$mobile_detect->setHttpHeaders(self::$fake_md_headers);
+    self::$mobile_detect = new Mobile_Detect(self::$fake_md_headers);
+    
+    // Mobile_Detect uses some additional http headers to get user-agent, so it's the best place we can get current user-agent from
+    self::$my_user_agent = self::$mobile_detect->getUserAgent();
     
     self::$md_browsers = array_keys(self::$mobile_detect->getBrowsers());
     
@@ -421,12 +422,20 @@ class UserAgentInfoPeer
     
     $is_mobile = $md_is_mobile || $bc->ismobiledevice;
     
-    // uaparser returns good quality results for browser detection because it's based on generic substrings
-    $browser = self::parseBrowserUap($uap);
-    // for mobile browsers we alternatively try Mobile_Detect
-    if (!$browser) $browser = $md_browser;
-    // if nothing worked we try browscap, this is very useful for legacy and exotic browsers 
-    if (!$browser) $browser = self::parseBrowserBc($bc);
+    if (false === strpos($user_agent, 'WSCommand'))
+    {
+      // uaparser returns good quality results for browser detection because it's based on generic substrings
+      $browser = self::parseBrowserUap($uap);
+      // for mobile browsers we alternatively try Mobile_Detect
+      if (!$browser) $browser = $md_browser;
+      // if nothing worked we try browscap, this is very useful for legacy and exotic browsers 
+      if (!$browser) $browser = self::parseBrowserBc($bc);
+    }
+    else
+    {
+      // this is one very specific case - incorrect identification of WSCommand bot
+      $browser = self::parseBrowserBc($bc);
+    }
     
     // returning 'Android' for both browser and os is a bad idea
     if ('Android' == @$browser['name'])
