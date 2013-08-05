@@ -104,6 +104,6 @@ Todo list
 - test full browscap file and see if it makes sense to use it
 - should browscap be moved fully to PHP as in https://github.com/garetjax/phpbrowscap ?
 - It would make sense to get rid of the php.ini setting requirement and just be able to fully control what data is served from browscap.
-- make a simple HTML page to test all user agents from user-agent-examples.txt
 - include files (do not rely on autoload)
 - see which PHP version is required to run the script. PHP 5.0 would be the best, there is no need to push for 5.3. However, right now it may not be compatible with older PHP versions, as it was created on PHP 5.4.
+- Internet Explorer vs. Chrome Frame
