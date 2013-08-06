@@ -11,7 +11,7 @@
  * 
  * @link https://github.com/quentin389/UserAgentInfo
  * 
- * @version 1.0
+ * @version 1.1
  *
  */
 class myUAICacheAdapter
