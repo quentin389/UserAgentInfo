@@ -43,22 +43,7 @@
  * 
  * @link https://github.com/quentin389/UserAgentInfo
  * 
- * @todo test what will change if I move browscap browser types detection to the first place instead of last (use all the user agents)
- * @todo important (performance!) - do not init anything but required part of Mobile_Detect before checking user agent in cache 
- * @todo should I standarize OS name and move Windows version to ->version?
- * @todo should device family be changed to device manufacturer and version to name (same as in full browscap)?
- * @todo request to add version number to browscap get_browser()
- * @todo request to add version number to uaparser json file
- * @todo test full browscap file and see if it makes sense to use it
- * @todo should browscap be moved fully to PHP as in https://github.com/garetjax/phpbrowscap ?
- *   It would make sense to get rid of the php.ini setting requirement and just be able to fully control what data is served from browscap.
- *   If I'm gonna parse browscap.ini I should merge identical entries with just version changed - I'm gonna match using pregs anyway so there is
- *   no need to have 20 entries instead of 1.
- * @todo make a simple html page to test all user agents from user-agent-examples.txt
- * @todo include files (do not rely on autoload)
- * @todo see which PHP version is required to run the script
- * 
- * @version 1.0
+ * @version 1.1
  */
 class UserAgentInfoPeer
 {
@@ -225,6 +210,13 @@ class UserAgentInfoPeer
   protected static $uaparser;
   
   /**
+   * URI of the source json file for ua-parser
+   * 
+   * @var string
+   */
+  protected static $uaparser_source_file;
+  
+  /**
    * User agent of the current user, taken from http headers.
    */
   protected static $my_user_agent;
@@ -266,7 +258,7 @@ class UserAgentInfoPeer
   {
     myUAITimerAdapter::start('UserAgentInfoPeer');
     
-    self::init();
+    self::initBeforeCache();
     
     if (null === $user_agent)
     {
@@ -284,9 +276,9 @@ class UserAgentInfoPeer
     
     if (!$result)
     {
-      myUAITimerAdapter::start('UserAgentInfoPeer::parse()');
+      self::initAfterCache();
+      
       $result = self::parse($user_agent);
-      myUAITimerAdapter::stop('UserAgentInfoPeer::parse()');
       
       if ($use_cache)
       {
@@ -300,9 +292,9 @@ class UserAgentInfoPeer
   }
   
   /**
-   * Executed only once. Sets all the information that can be precached, including current user user-agent.
+   * Executed only once. Sets information required for each new UserAgentInfo object.
    */
-  protected static function init()
+  protected static function initBeforeCache()
   {
     if (null !== self::$data_version)
     {
@@ -316,6 +308,32 @@ class UserAgentInfoPeer
     
     // Mobile_Detect uses some additional http headers to get user-agent, so it's the best place we can get current user-agent from
     self::$my_user_agent = self::$mobile_detect->getUserAgent();
+    
+    self::$uaparser_source_file = dirname(__FILE__) . DIRECTORY_SEPARATOR . self::UAPARSER_JSON_LOCATION;
+    
+    // this value should change if anything is changed in the source data; the value is human readable (I don't see a need for md5) 
+    self::$data_version = implode(self::SEPARATOR_GENERIC, array(
+      self::CLASS_PARSER_VERSION, // modifications in UserAgentInfoPeer parser
+      BrowscapWrapper::getBrowscapVersion(), // changes in browscap original file (not a real version, filesize() is used)
+      BrowscapWrapper::getBrowscapReplacementVersion(), // changes in additional, custom detection rules defined in BrowscapWrapper
+      self::$mobile_detect->getScriptVersion(), // nice, Mobile_Detect actually returns a proper version string
+      filesize(self::$uaparser_source_file) // changes in uaparser source file; same as browscap, the version is not passed so we use filesize() to approximate
+    ));
+  }
+  
+  /**
+   * Executed once or never. Sets all the information that is required for parsing the user agent string.
+   * 
+   * If all the user agents are taken from cache, this method is not called
+   */
+  protected static function initAfterCache()
+  {
+    if (null !== self::$uaparser)
+    {
+      return;
+    }
+    
+    self::$uaparser = new UAParser(self::$uaparser_source_file);
     
     self::$md_browsers = array_keys(self::$mobile_detect->getBrowsers());
     
@@ -334,18 +352,6 @@ class UserAgentInfoPeer
     }
     self::$md_devices_generic[] = 'Nokia';
     self::$md_devices_generic = array_unique(self::$md_devices_generic);
-    
-    $ua_parser_file = dirname(__FILE__) . DIRECTORY_SEPARATOR . self::UAPARSER_JSON_LOCATION;
-    self::$uaparser = new UAParser($ua_parser_file);
-    
-    // this value should change if anything is changed in the source data; the value is human readable (I don't see a need for md5) 
-    self::$data_version = implode(self::SEPARATOR_GENERIC, array(
-      self::CLASS_PARSER_VERSION, // modifications in UserAgentInfoPeer parser
-      BrowscapWrapper::getBrowscapVersion(), // changes in browscap original file (not a real version, filesize() is used)
-      BrowscapWrapper::getBrowscapReplacementVersion(), // changes in additional, custom detection rules defined in BrowscapWrapper
-      self::$mobile_detect->getScriptVersion(), // nice, Mobile_Detect actually returns a proper version string
-      filesize($ua_parser_file) // changes in uaparser source file; same as browscap, the version is not passed so we use filesize() to approximate
-    ));
   }
   
   /**
@@ -404,9 +410,7 @@ class UserAgentInfoPeer
   {
     // 1. >>> retrieve the data from sources
     
-    myUAITimerAdapter::start('UserAgentInfoPeer - get_browser() time');
     $bc = BrowscapWrapper::getInfo($user_agent);
-    myUAITimerAdapter::stop('UserAgentInfoPeer - get_browser() time');
     
     self::$mobile_detect->setUserAgent($user_agent);
     $md = self::$mobile_detect;
@@ -729,8 +733,6 @@ class UserAgentInfoPeer
    * Identify the device 'family' and version. The term 'family' is really arbitrary as we have things like 'iPhone' and 'Samsung' there together
    * 
    * Currently browscap lite and standard versions do not identify devices.
-   * 
-   * @todo test full_php_browscap.ini and see if it's a good idea to use it, if so, add it to device detection and add 'rendering engine' property
    * .
    * @param Mobile_Detect $md
    * 

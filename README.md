@@ -1,5 +1,7 @@
 See **[changelog file](CHANGELOG.md)** for a list of changes.
 
+Data about **[performance and scaling](#performance-and-scaling)** of UserAgentInfo.
+
 UserAgentInfo uses other project to get the data it needs.
 See **[list of those projects](#relation-to-other-projects)**.
 
@@ -76,6 +78,61 @@ if ($ua->isMobile() && !$ua->isMobileAndroid() && !$ua->isMobileAppleIos())
 
 - `->renderInfoAll()` - get all the above values in one string, very useful to include if you show information about given user for your internal purposes. For example when users report bugs to via forms on your website.
 
+Performance and scaling
+-------------------------
+
+=== simple bulk retrieval 1-by-1
+Bulk retrieval of data from [example user agent strings](imports/user-agent-examples.txt) (`2494 unique entries`).
+Each user agent checked using `UserAgentInfoPeer::getOther($user_agent_string)`.
+Test performed on Ubuntu virtual machine on a high end host machine.
+
+With empty cache:
+- `UserAgentInfoPeer` total time is `156.366 sec (62.7 ms per entry)` of which
+  - `0.704 sec (0.3 ms per entry)` is checking data in the cache (`->get()` calls with empty results)
+  - `153.678 sec (61.7 ms per entry)` is a total parsing time of which
+    - `111.083 sec (44.6 ms per entry)` is get_browser() time
+    - `0.508 sec (0.2 ms per entry)` is custom browscap strings time
+    - `14.560 sec (5.8 ms per entry)` is ua-parser time
+    - `27.525 sec (11 ms per entry)` is Mobile_Detect time (this was not measured directly, the actual parsing might be much faster)
+
+With the cache filled, all entries retrieved from the cache:
+- `UserAgentInfoPeer` total time is `1.161 sec (0.5 ms per entry)` of which
+  - `0.669 (0.3 ms per entry)` is getting data from the cache (this includes unserializing, `UserAgentInfo` objects are returned)
+
+As you can see, retrieving information from `browscap` is slow (note: I'm using 'standard' browscap file at the moment). Even if you try to user only lighter
+projects - `ua-parser` or `Mobile_Detect` to get a as much info about browsers at possible, this will still take some time for each request. This means that
+the logical way to go is to use cache for user agent information. This way **you will be limited only by the speed and performance of your cache**.
+
+If you take that approach, you will be able use all information available from user agent strings at will and you won't have to worry about any preformance problems.
+Even bulk analysis of user agents won't be a problem (for example, you can preform cron checks on IP+browser pairs to check for bots).
+
+Of course, one question remains, what's the cache hit ratio when you choose to use it for user agent string detection?
+
+=== cache hit ratio
+My `UserAgentInfo` was running for about a week without any changes or cache resets on a set of websites with more than 1.5 million user visits per month.
+During that time:
+- There were an average of 2,478 script calls per minute (each script call uses `UserAgentInfo`), which gives a `total of 24,978,240 calls`.
+- I've accumulated `20,282 UserAgentInfo cached objects`.
+- The total size of those objects when saved in cache is around `12 MB (around 620 bytes per object)`.
+
+That means that the number of calls that did not use cache was below 0.09% which is a great result.
+Moreover, the most popular user agent strings were cached right away.
+As you can imagine, the **number of unique user agents does not grow proportonally to the website traffic**. The number of popular browsers is quite limited,
+so the larger your website gets the lower chance of seeing a new user agent. This means that the more users you server the more difference using
+`UserAgentInfo` makes.
+
+== conclusion
+As long as you want to just check if a browser is mobile or not, or do some other one simple check based on user agent string, if you know what you're doing,
+there is no need to use any advanced scripts.
+
+However, `UserAgentInfo` delivers a very good average performance (limited by the performance of your cache system) while reliably providing
+as much information about the user as possible.
+
+Switching to `UserAgentInfo` gives you many interesting opportunities you might have not thought about before. An example:
+By using `UserAgentInfoPeer::getMy()->isBot()` to completely disable session for all bots you can speed up your website and save a huge amount of disk operations.
+That's because bots (in general) do not use cookies and thus PHP will, by default, create a new session for each bot call that is made to your website.
+So it's entirely possible that more than 90% of your current sessions come from bot calls, and will never be used. 
+
 
 Relation to other projects
 ----------------------------------
@@ -96,14 +153,16 @@ The used projects are:
 Todo list
 ---------------------------
 - update source parsers once a week
-- important (performance!) - do not init anything but required part of Mobile_Detect before checking user agent in cache 
 - should I standardize OS name and move Windows version to ->version?
 - should device family be changed to device manufacturer and version to name (same as in full browscap)?
 - request to add version number to browscap get_browser()
 - request to add version number to uaparser json file
-- test full browscap file and see if it makes sense to use it
+- test full browscap file and see if it makes sense to use it, if so, add it to device detection and add 'rendering engine' property
 - should browscap be moved fully to PHP as in https://github.com/garetjax/phpbrowscap ?
-- It would make sense to get rid of the php.ini setting requirement and just be able to fully control what data is served from browscap.
+  - It would make sense to get rid of the php.ini setting requirement and just be able to fully control what data is served from browscap.
+  - If I'm gonna parse browscap.ini I should merge identical entries with just version changed - I'm gonna match using pregs anyway so there is
+  - no need to have 20 entries instead of 1.
 - include files (do not rely on autoload)
 - see which PHP version is required to run the script. PHP 5.0 would be the best, there is no need to push for 5.3. However, right now it may not be compatible with older PHP versions, as it was created on PHP 5.4.
 - Internet Explorer vs. Chrome Frame
+
