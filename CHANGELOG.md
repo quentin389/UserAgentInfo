@@ -14,6 +14,6 @@ Changelog
   - Changes to code style.
 - Updated browscap.ini from version 5019 to 5020. This is a first update since March, but it seems that the project is finally getting back on track, so I'm counting on more updates pretty soon.
 - "WSCommand" bot was misidentified as a user. Added an exception.
-- Removed timers that were not required
-- Moved some operations from init() to after we retrieve UserAgentInfo object from cache. Thanks to that they may not get executed at all.
-- Added performance tests results to README.md 
+- Removed timers that were not required.
+- Moved some operations from `init()` to after we retrieve `UserAgentInfo` object from cache. Thanks to that they may not get executed at all.
+- Added performance tests results to [README.md](README.md#performance-and-scaling)
