@@ -81,7 +81,7 @@ if ($ua->isMobile() && !$ua->isMobileAndroid() && !$ua->isMobileAppleIos())
 Performance and scaling
 -------------------------
 
-=== simple bulk retrieval 1-by-1
+### Simple bulk retrieval 1-by-1
 Bulk retrieval of data from [example user agent strings](imports/user-agent-examples.txt) (`2494 unique entries`).
 Each user agent checked using `UserAgentInfoPeer::getOther($user_agent_string)`.
 Test performed on Ubuntu virtual machine on a high end host machine.
@@ -103,12 +103,12 @@ As you can see, retrieving information from `browscap` is slow (note: I'm using 
 projects - `ua-parser` or `Mobile_Detect` to get a as much info about browsers at possible, this will still take some time for each request. This means that
 the logical way to go is to use cache for user agent information. This way **you will be limited only by the speed and performance of your cache**.
 
-If you take that approach, you will be able use all information available from user agent strings at will and you won't have to worry about any preformance problems.
+If you take that approach, you will be able use all information available from user agent strings at will and you won't have to worry about any performance problems.
 Even bulk analysis of user agents won't be a problem (for example, you can preform cron checks on IP+browser pairs to check for bots).
 
 Of course, one question remains, what's the cache hit ratio when you choose to use it for user agent string detection?
 
-=== cache hit ratio
+### Cache hit ratio
 My `UserAgentInfo` was running for about a week without any changes or cache resets on a set of websites with more than 1.5 million user visits per month.
 During that time:
 - There were an average of 2,478 script calls per minute (each script call uses `UserAgentInfo`), which gives a `total of 24,978,240 calls`.
@@ -117,11 +117,11 @@ During that time:
 
 That means that the number of calls that did not use cache was below 0.09% which is a great result.
 Moreover, the most popular user agent strings were cached right away.
-As you can imagine, the **number of unique user agents does not grow proportonally to the website traffic**. The number of popular browsers is quite limited,
+As you can imagine, the **number of unique user agents does not grow proportionally to the website traffic**. The number of popular browsers is quite limited,
 so the larger your website gets the lower chance of seeing a new user agent. This means that the more users you server the more difference using
 `UserAgentInfo` makes.
 
-== conclusion
+### Conclusion
 As long as you want to just check if a browser is mobile or not, or do some other one simple check based on user agent string, if you know what you're doing,
 there is no need to use any advanced scripts.
 
