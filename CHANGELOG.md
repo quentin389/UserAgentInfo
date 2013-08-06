@@ -16,4 +16,4 @@ Changelog
 - "WSCommand" bot was misidentified as a user. Added an exception.
 - Removed timers that were not required.
 - Moved some operations from `init()` to after we retrieve `UserAgentInfo` object from cache. Thanks to that they may not get executed at all.
-- Added performance tests results to [README.md](README.md#performance-and-scaling)
+- Added performance test results to [README.md](README.md#performance-and-scaling)
