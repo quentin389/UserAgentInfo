@@ -1,3 +1,25 @@
+IEAutoDiscovery
+Mozilla/5.0 (compatible; vkShare; +http://vk.com/dev/Share)
+WSCommand_iPhone5.0_NRN_DEB 2.2.1 - 04/03/2012 - 11:36
+bady70
+Mozilla/6.0 (compatile; WTW Network Agent 1.0; U;)
+AsyncHttpClient 1.0
+Mozilla/20.0
+Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.16) Gecko
+OurBrowser/1.0 (Some Name)
+Ruby
+ruby
+Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_4) AppleWebKit/536.30.1 (KHTML, like Gecko) QuickLook/4.0
+Microsoft Office Mobile /14.0
+Mozilla/5.0 (Macintosh; Intel Mac OS X) Word/14.36.0
+HTTP_Request2/2.1.1 (http://pear.php.net/package/http_request2) PHP/5.3.2-1ubuntu4.18
+Mozilla/4.05 [en] (WinXP; I)
+CMRadar/0.1
+Mozilla/4.0 (compatible; Blog Search;)
+urlresolver
+Mozilla/4.0 (compatible; Synapse)
+Mozilla/0.6 Beta (Windows)
+Mozilla/5.0 (Windows NT 6.1; WOW64; rv:16.0) Gecko/20121024 imm_www311/1.0
 Mozilla/5.0 (compatible; coccoc/1.0; +http://help.coccoc.com/)
 8JC1 Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/534.24 (KHTML, like Gecko) Chrome/11.0.696.34 Safari/534.24
 A6-Indexer/1.0 (http://www.a6corp.com/a6-web-scraping-policy/)
@@ -5,7 +27,6 @@ AdsBot-Google (+http://www.google.com/adsbot.html)
 AdsBot-Google-Mobile (+http://www.google.com/mobile/adsbot.html) Mozilla (iPhone; U; CPU iPhone OS 3 0 like Mac OS X) AppleWebKit (KHTML, like Gecko) Mobile Safari
 Apache-HttpClient/UNAVAILABLE (java 1.4)
 ASTEL/1.0/J-0511.00/c10/smel
-AsyncHttpClient 1.0
 AU-MIC/1.1.4.0 20722 MMP/2.0
 BenQ-CF61/1.00/WAP2.0/MIDP2.0/CLDC1.0 UP.Browser/6.3.0.4.c.1.102 (GUI) MMP/2.0
 BlackBerry7100i/4.1.0 Profile/MIDP-2.0 Configuration/CLDC-1.1 VendorID/103
@@ -59,7 +80,6 @@ HTC-ST7377/1.59.502.3 (67150) Opera/9.50 (Windows NT 5.1; U; en) UP.Link/6.3.1.1
 ia_archiver (+http://www.alexa.com/site/help/webmasters; crawler@alexa.com)
 ia_archiver(OS-Wayback)
 ichiro/3.0 (http://search.goo.ne.jp/option/use/sub4/sub4-1/)
-IEAutoDiscovery
 iisbot/1.0 (+http://www.iis.net/iisbot.html)
 ImmoMobile_iPhone_1_0
 iMozilla/5.0 (Linux; U; Android 2.3.6; pl-pl; GT-I9100 Build/GINGERBREAD) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1
@@ -86,7 +106,6 @@ magpie-crawler/1.1 (U; Linux amd64; en-GB; +http://www.brandwatch.net)
 MAUI WAP Browser
 mbot v.1.16
 Mediapartners-Google
-Microsoft Office Mobile /14.0
 Microsoft Office Mobile/15.0
 Microsoft Office Protocol Discovery
 Microsoft-WebDAV-MiniRedir/6.1.7601
@@ -112,7 +131,6 @@ Mozilla/2.0 (compatible; Elaine/3.0)
 Mozilla/2.0 (compatible; MSIE 3.02; Windows CE; 240x320)
 Mozilla/2.0 (compatible; MSIE 3.02; Windows CE; PPC; 240x320)
 Mozilla/2.0 (compatible; MSIE 3.02; Windows CE; Smartphone; 176x220)
-Mozilla/20.0
 Mozilla/3.0 (compatible; AvantGo 3.2)
 Mozilla/3.0 (x86 [en] Windows NT 5.1; Sun)
 Mozilla/3.0(DDIPOCKET;JRC/AH-J3001V,AH-J3002V/1.0/0100/c50)CNF/2.0
@@ -232,7 +250,6 @@ Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; WOW64; Trident/4.0; chromefra
 Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1)
 Mozilla/4.0 (compatible; MSIE 9.0; QDesk 2.3.1185.202; Windows NT 6.1; Trident/6.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0)
 Mozilla/4.0 (compatible; MSIE 999.1; Unknown)
-Mozilla/4.0 (compatible; Synapse)
 Mozilla/4.0 (compatible;)
 Mozilla/4.0 (compatible;MSIE 6.0;Windows95;PalmSource) Netfront/3.0
 Mozilla/4.0 (compatible;MSIE 6.0;Windows95;PalmSource) Netfront/3.0;8;320x320
@@ -245,7 +262,6 @@ Mozilla/4.0 (PDA; Windows CE/1.0.1) NetFront/3.0
 Mozilla/4.0 (PS2; PlayStation BB Navigator 1.0) NetFront/3.0
 Mozilla/4.0 (PSP (PlayStation Portable); 2.00)
 Mozilla/4.0(compatible; MSIE 4.01; Windows CE; PPC; 240x320)
-Mozilla/4.05 [en] (WinXP; I)
 Mozilla/4.08 (Windows; Mobile Content Viewer/1.0) NetFront/3.2
 Mozilla/4.1 (compatible; MSIE 5.0; Symbian OS; Nokia 6600;432) Opera 6.10 [en]
 Mozilla/4.1 (compatible; MSIE 5.0; Symbian OS; Nokia 6600;452) Opera 6.20  [en-US]
@@ -382,7 +398,6 @@ Mozilla/5.0 (compatible; Sosospider/2.0; +http://help.soso.com/webspider.htm)
 Mozilla/5.0 (compatible; special_archiver/3.1.1 +http://www.archive.org/details/archive.org_bot)
 Mozilla/5.0 (compatible; Teleca Q7; Brew 3.1.5; U; en) 240X400 LGE VX9700
 Mozilla/5.0 (compatible; TweetmemeBot/3.0; +http://tweetmeme.com/)
-Mozilla/5.0 (compatible; vkShare; +http://vk.com/dev/Share)
 Mozilla/5.0 (compatible; Yahoo! Slurp/3.0; http://help.yahoo.com/help/us/ysearch/slurp) NOT Firefox/3.5
 Mozilla/5.0 (compatible; YandexImages/3.0; +http://yandex.com/bots)
 Mozilla/5.0 (compatible; YYSpider; +http://www.yunyun.com/spider.html)
@@ -1015,7 +1030,6 @@ Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_3) AppleWebKit/537.31 (KHTML, like G
 Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.116 Safari/537.36
 Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/28.0.1500.71 Safari/537.36
 Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_4) AppleWebKit/536.30.1 (KHTML, like Gecko)
-Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_4) AppleWebKit/536.30.1 (KHTML, like Gecko) QuickLook/4.0
 Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_4) AppleWebKit/536.30.1 (KHTML, like Gecko) Version/6.0.5 Safari/536.30.1
 Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_4) AppleWebKit/536.30.1 (KHTML, like Gecko) Version/6.0.5 Safari/8536.30.1 Sleipnir/4.3.1
 Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_4) AppleWebKit/537.31 (KHTML, like Gecko) Chrome/26.0.1410.65 Safari/537.31
@@ -1987,7 +2001,6 @@ Mozilla/5.0 (X11; U; Linux i686; pl-PL; rv:1.9.2.17) Gecko/20110422 Ubuntu/10.10
 Mozilla/5.0 (X11; U; Linux i686; pl-PL; rv:1.9.2.17) Gecko/20110428 Fedora/3.6.17-1.fc13 Firefox/3.6.17
 Mozilla/5.0 (X11; U; Linux i686; pl; rv:1.8.0.3) Gecko/20060426 Firefox/1.5.0.3
 Mozilla/5.0 (X11; U; Linux i686; pl; rv:1.9.2) Gecko/20100115 Firefox/3.6
-Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.16) Gecko
 Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.2.16) Gecko/20110323 Ubuntu/10.10 (maverick) Firefox/3.6.16
 Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9) Gecko Minefield/3.0
 Mozilla/5.0 (X11; U; Linux x86_64; en-US) AppleWebKit/532.9 (KHTML, like Gecko) Chrome/5.0.307.11 Safari/532.9
@@ -2022,7 +2035,6 @@ Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:23.0) Gecko/20100101 Firefox/23.0
 Mozilla/5.0 (ZTE-E_N72/N72V1.0.0B02;U;Windows Mobile/6.1;Profile/MIDP-2.0 Configuration/CLDC-1.1;320*240;CTC/2.0) IE/6.0 (compatible; MSIE 4.01; Windows CE; PPC)/UC Browser7.7.1.88
 Mozilla/5.0 NewsFox/1.0.8.4.2
 Mozilla/5.0(iPad; U;CPU OS 5_1 like Mac OS X; zh-CN; iPad3,1) AppleWebKit/534.46 (KHTML, like Gecko) UCBrowser/2.0.1.280 U3/0.8.0 Safari/7543.48.3
-Mozilla/6.0 (compatile; WTW Network Agent 1.0; U;)
 Mozilla/9.0 (Windows; U; Windows NT 5.1; pl; rv:1.9.1.9) Gecko/20100909 Firefox/3.9.9 (.NET CLR 3.1.39999)"
 msnbot-media/1.1 (+http://search.msn.com/msnbot.htm)
 msnbot/2.0b (+http://search.msn.com/msnbot.htm)
@@ -2382,7 +2394,6 @@ Opera/9.80 (X11; Linux x86_64) Presto/2.12.388 Version/12.15
 Opera/9.80 (X11; Linux zbov) Presto/2.11.355 Version/12.10
 Opera/9.96 (X11; Linux i686; U; pl) Presto/2.9.170 Version/11.00
 OPWV-SDK UP.Browser/7.0.2.3.119 (GUI) MMP/2.0 Push/PO
-OurBrowser/1.0 (Some Name)
 Outlook-Express/7.0 (MSIE 7.0; Windows NT 6.1; WOW64; Trident/5.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; .NET4.0C; McAfee; AskTbORJ/5.15.23.36191; TmstmpExt)
 Outlook-Express/7.0 (MSIE 7.0; Windows NT 6.1; WOW64; Trident/6.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; .NET4.0C; Media Center PC 6.0; .NET4.0E; MALN; AlexaToolbar/amzni-3.0; TmstmpExt)
 Outlook-Express/7.0 (MSIE 7.0; Windows NT 6.1; WOW64; Trident/6.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; InfoPath.2; .NET4.0C; BRI/2; TmstmpExt)
@@ -2398,7 +2409,6 @@ psbot/0.1 (+http://www.picsearch.com/bot.html)
 Python-urllib/2.6
 Python-urllib/2.7
 ReqwirelessWeb/3.2 S55
-ruby
 sam-r350 UP.Browser/6.2.3.8 (GUI) MMP/2.0
 sam-r380 UP.Browser/6.2.3.8 (GUI) MMP/2.0
 samr810 Netfront/3.4 Mozilla/5.0 like Gecko/20060426

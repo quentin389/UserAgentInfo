@@ -19,8 +19,6 @@
  * @author Mikołaj Misiurewicz <quentin389+uai@gmail.com>
  * 
  * @link https://github.com/quentin389/UserAgentInfo
- * 
- * @version 1.1
  *
  */
 class BrowscapWrapper
@@ -376,7 +374,7 @@ class BrowscapWrapper
       'issyndicationreader' => '0',
       'crawler' => '1'
     ),
-    '#^WSCommand-iPhone#' => array(
+    '#^WSCommand(-|_)iPhone#' => array(
       'browser' => 'iPhone app bot',
       'isbanned' => '0',
       'ismobiledevice' => '1',
@@ -886,12 +884,19 @@ class BrowscapWrapper
       'issyndicationreader' => '0',
       'crawler' => '1'
     ),
-    'ruby' =>  array(
+    'Ruby' =>  array(
       'browser' => 'ruby',
       'isbanned' => '0',
       'ismobiledevice' => '0',
       'issyndicationreader' => '0',
       'crawler' => '1'
+    ),
+    'ruby' =>  array(
+        'browser' => 'ruby',
+        'isbanned' => '0',
+        'ismobiledevice' => '0',
+        'issyndicationreader' => '0',
+        'crawler' => '1'
     )
   );
   

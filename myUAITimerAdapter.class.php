@@ -8,8 +8,6 @@
  * @author Mikołaj Misiurewicz <quentin389+uai@gmail.com>
  * 
  * @link https://github.com/quentin389/UserAgentInfo
- * 
- * @version 1.1
  *
  */
 class myUAITimerAdapter

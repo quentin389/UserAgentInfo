@@ -43,7 +43,7 @@
  * 
  * @link https://github.com/quentin389/UserAgentInfo
  * 
- * @version 1.1
+ * @version 1.1.1
  */
 class UserAgentInfoPeer
 {

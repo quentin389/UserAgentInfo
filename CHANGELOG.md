@@ -6,6 +6,12 @@ See **[list of those projects](README.md#relation-to-other-projects)**.
 Changelog
 =========
 
+### version 1.1.1 - august 10, 2013
+A small update to detection rules.
+- updated regexes.json in ua-parser
+- updated BrowscapWrapper rules for "Ruby" and "WSCommand"
+- removed '@version' string from all but one file
+
 ### version 1.1 - august 6, 2013
 
 - Updated Mobile_Detect.php from version 2.6.3 to 2.6.6:
