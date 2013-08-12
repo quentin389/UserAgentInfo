@@ -171,3 +171,4 @@ Todo list
 - test full browscap file and see if it makes sense to use it, if so, add it to device detection and add 'rendering engine' property
 - see which PHP version is required to run the script. PHP 5.0 would be the best, there is no need to push for 5.3. However, right now it may not be compatible with older PHP versions, as it was created on PHP 5.4.
 - Internet Explorer vs. Chrome Frame
+- Add batch retrieval from cache (batch save could also be implemented, but that seems kinda weird... although... O.o)
