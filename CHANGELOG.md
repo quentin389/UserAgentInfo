@@ -6,6 +6,9 @@ See **[list of those projects](README.md#relation-to-other-projects)**.
 Changelog
 =========
 
+### version 1.1.2 - august 12, 2013
+- fix for **critical** bug introduced in verson 1.1 (`UserAgentInfoPeer::getMy()` was checking empty user agent string, and never returning any useful data)
+
 ### version 1.1.1 - august 10, 2013
 A small update to detection rules.
 - updated regexes.json in ua-parser

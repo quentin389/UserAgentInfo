@@ -43,7 +43,7 @@
  * 
  * @link https://github.com/quentin389/UserAgentInfo
  * 
- * @version 1.1.1
+ * @version 1.1.2
  */
 class UserAgentInfoPeer
 {
@@ -304,10 +304,12 @@ class UserAgentInfoPeer
     // for the sake of clarity we just ignore all the additional headers used by Mobile_Detect in anything but ->getUserAgent().
     // this way the information we get for any user agent string will always be the same, whether we pass it as an arbitrary string
     // or take from a current user.
-    self::$mobile_detect = new Mobile_Detect(self::$fake_md_headers);
+    self::$mobile_detect = new Mobile_Detect();
     
     // Mobile_Detect uses some additional http headers to get user-agent, so it's the best place we can get current user-agent from
     self::$my_user_agent = self::$mobile_detect->getUserAgent();
+    
+    self::$mobile_detect->httpHeaders = array();
     
     self::$uaparser_source_file = dirname(__FILE__) . DIRECTORY_SEPARATOR . self::UAPARSER_JSON_LOCATION;
     

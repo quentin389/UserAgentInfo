@@ -157,16 +157,17 @@ The used projects are:
 Todo list
 ---------------------------
 - update source parsers once a week
+- include files (do not rely on autoload)
+- simplify getting of HTTP_USER_AGENT, right now it's error prone
+- add tests
+- should browscap be moved fully to PHP as in https://github.com/garetjax/phpbrowscap ?
+  - It would make sense to get rid of the php.ini setting requirement and just be able to fully control what data is served from browscap.
+  - If I'm gonna parse browscap.ini I should merge identical entries with just version changed - I'm gonna match using pregs anyway so there is
+  - no need to have 20 entries instead of 1.
 - should I standardize OS name and move Windows version to ->version?
 - should device family be changed to device manufacturer and version to name (same as in full browscap)?
 - request to add version number to browscap get_browser()
 - request to add version number to uaparser json file
 - test full browscap file and see if it makes sense to use it, if so, add it to device detection and add 'rendering engine' property
-- should browscap be moved fully to PHP as in https://github.com/garetjax/phpbrowscap ?
-  - It would make sense to get rid of the php.ini setting requirement and just be able to fully control what data is served from browscap.
-  - If I'm gonna parse browscap.ini I should merge identical entries with just version changed - I'm gonna match using pregs anyway so there is
-  - no need to have 20 entries instead of 1.
-- include files (do not rely on autoload)
 - see which PHP version is required to run the script. PHP 5.0 would be the best, there is no need to push for 5.3. However, right now it may not be compatible with older PHP versions, as it was created on PHP 5.4.
 - Internet Explorer vs. Chrome Frame
-

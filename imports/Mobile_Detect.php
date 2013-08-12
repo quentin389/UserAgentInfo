@@ -80,7 +80,7 @@ class Mobile_Detect
      * HTTP headers in the PHP-flavor. So HTTP_USER_AGENT and SERVER_SOFTWARE.
      * @var array
      */
-    protected $httpHeaders = array();
+    public $httpHeaders = array();
 
     /**
      * All the rules combined.
