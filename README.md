@@ -77,7 +77,7 @@ if ($ua->isMobile() && !$ua->isMobileAndroid() && !$ua->isMobileAppleIos())
 
 **important note:**
 
-When adding a bot to `->isBanned()` list we always verify what the bot is and use our best judgement on whether this bot should be universally banned or not. Having said that, the decisions are still **arbitrary**, so there may be sitiuations in which you wouldn't agree that a certain bot should be banned. In such case feel free to report it as an issue.
+When adding a bot to `->isBanned()` list we always verify what the bot is and use our best judgement on whether this bot should be universally banned or not. Having said that, the decisions are still **arbitrary**, so there may be sitiuations in which you wouldn't agree that a certain bot should be banned. So, keep that in mind when using `->isBanned()` and if you think a mistake was made here feel free to report it as an issue.
 
 - `->isBot()` - a very useful check to both save in your logs and serve slightly different content, for example disable dynamic images loading for spiders. Be careful, never hide or show any user readable content only to bots or you'll get banned from Google!
 
