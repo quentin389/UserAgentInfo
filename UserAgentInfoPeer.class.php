@@ -45,7 +45,7 @@ require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'UserAgentInfoConfig.clas
  * 
  * @link https://github.com/quentin389/UserAgentInfo
  * 
- * @version 1.1.2
+ * @version 1.2
  */
 class UserAgentInfoPeer
 {

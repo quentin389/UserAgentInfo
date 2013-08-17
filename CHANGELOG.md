@@ -6,7 +6,7 @@ See **[list of those projects](README.md#relation-to-other-projects)**.
 Changelog
 =========
 
-### version 1.2 - august XX, 2013
+### version 1.2 - august 17, 2013
 - Change in browscap.ini version 5020 to temporarily fix a bug with parsing user agents with "+" (plus) sign in the match string. See: https://groups.google.com/forum/#!topic/browscap/s9zGyRBIvK0
   This also allowed me to remove some user agent overrides from BrowscapWrapper.class.php
 - Added `require_once` for required files
