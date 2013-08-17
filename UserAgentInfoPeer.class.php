@@ -256,8 +256,6 @@ class UserAgentInfoPeer
    */
   protected static function getInfo($user_agent, $use_cache)
   {
-    myUAITimerAdapter::start('UserAgentInfoPeer');
-    
     self::initBeforeCache();
     
     if (null === $user_agent)
@@ -286,8 +284,6 @@ class UserAgentInfoPeer
       }
     }
     
-    myUAITimerAdapter::stop('UserAgentInfoPeer');
-    
     return $result;
   }
   
@@ -301,15 +297,20 @@ class UserAgentInfoPeer
       return;
     }
     
-    // for the sake of clarity we just ignore all the additional headers used by Mobile_Detect in anything but ->getUserAgent().
-    // this way the information we get for any user agent string will always be the same, whether we pass it as an arbitrary string
-    // or take from a current user.
-    self::$mobile_detect = new Mobile_Detect();
+    require_once UserAgentInfoConfig::$base_dir . 'UserAgentInfo.class.php';
+    require_once UserAgentInfoConfig::$base_dir . 'BrowscapWrapper.class.php';
+    require_once UserAgentInfoConfig::$base_dir . UserAgentInfoConfig::DIR_CACHE . DIRECTORY_SEPARATOR . 'UaiCacheInterface.php';
+    require_once UserAgentInfoConfig::$base_dir . UserAgentInfoConfig::DIR_CACHE . DIRECTORY_SEPARATOR . UserAgentInfoConfig::CACHE_CLASS_NAME . '.class.php';
     
-    // Mobile_Detect uses some additional http headers to get user-agent, so it's the best place we can get current user-agent from
-    self::$my_user_agent = self::$mobile_detect->getUserAgent();
+    if (!in_array('UaiCacheInterface', class_implements(UserAgentInfoConfig::CACHE_CLASS_NAME, false)))
+    {
+      throw new Exception('Class ' . UserAgentInfoConfig::CACHE_CLASS_NAME . ' doesn\'t implement UaiCacheInterface.');
+    }
     
-    self::$mobile_detect->httpHeaders = array();
+    // can be empty
+    self::$my_user_agent = (string) @$_SERVER['HTTP_USER_AGENT'];
+    
+    self::$mobile_detect = new Mobile_Detect(self::$fake_md_headers);
     
     self::$uaparser_source_file = dirname(__FILE__) . DIRECTORY_SEPARATOR . self::UAPARSER_JSON_LOCATION;
     
@@ -334,6 +335,8 @@ class UserAgentInfoPeer
     {
       return;
     }
+    
+    require_once UserAgentInfoConfig::$base_dir . UserAgentInfoConfig::DIR_IMPORTS . DIRECTORY_SEPARATOR . 'uaparser.php';
     
     self::$uaparser = new UAParser(self::$uaparser_source_file);
     
@@ -370,7 +373,7 @@ class UserAgentInfoPeer
       return self::$local_cache[$ua_md5];
     }
     
-    $result = myUAICacheAdapter::get($ua_md5);
+    $result = call_user_func(array(UserAgentInfoConfig::CACHE_CLASS_NAME, 'get'), $ua_md5);
     
     if (!is_object($result) || !($result instanceof UserAgentInfo))
     {
@@ -397,7 +400,7 @@ class UserAgentInfoPeer
   {
     self::$local_cache[$ua_md5] = $data;
     
-    myUAICacheAdapter::set($ua_md5, $data);
+    call_user_func(array(UserAgentInfoConfig::CACHE_CLASS_NAME, 'set'), $ua_md5, $data);
   }
   
   /**

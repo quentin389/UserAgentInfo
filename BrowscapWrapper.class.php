@@ -51,13 +51,14 @@ class BrowscapWrapper
    * 
    * This method probably won't work if you don't set 'browscap' php.ini directive as an absolute path.
    * 
-   * @todo request from browscap people to add version information to get_browser() object
-   * 
    * @return integer
    */
   public static function getBrowscapVersion()
   {
-    return filesize(ini_get('browscap'));
+    // this is a temporary fix for an issue https://github.com/quentin389/UserAgentInfo/issues/2
+    return 'fake';
+    
+    // return filesize(ini_get('browscap'));
   }
   
   /**
@@ -242,16 +243,6 @@ class BrowscapWrapper
       'ismobiledevice' => '0',
       'issyndicationreader' => '0',
       'crawler' => '1' // technically it's NOT a crawler
-    ),
-    '#^Mozilla/5\.0 \(compatible; AhrefsBot/(\d+)\.(\d+);#' => array(
-      'browser' => 'AhrefsBots', // ahrefs.com uses it's own spider to crawl the web and then makes the data available for SEO research
-      'version' => '%1$s.%2$s',
-      'majorver' => '%1$s',
-      'minorver' => '%2$s',
-      'isbanned' => '0', // ahrefs.com is a legitimate SEO business, so no ban here
-      'ismobiledevice' => '0',
-      'issyndicationreader' => '0',
-      'crawler' => '1'
     ),
     '#^Mozilla/5\.0 \(compatible; WBSearchBot/(\d+)\.(\d+);#' => array(
       'browser' => 'WBSearchBot',
@@ -585,13 +576,6 @@ class BrowscapWrapper
     ),
     'MLBot (www.metadatalabs.com/mlbot)' => array(
       'browser' => 'MLBot',
-      'isbanned' => '0',
-      'ismobiledevice' => '0',
-      'issyndicationreader' => '0',
-      'crawler' => '1'
-    ),
-    'facebookexternalhit/1.1 (+http://www.facebook.com/externalhit_uatext.php)' => array(
-      'browser' => 'Facebook Bot',
       'isbanned' => '0',
       'ismobiledevice' => '0',
       'issyndicationreader' => '0',

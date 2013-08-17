@@ -6,6 +6,16 @@ See **[list of those projects](README.md#relation-to-other-projects)**.
 Changelog
 =========
 
+### version 1.2 - august XX, 2013
+- Change in browscap.ini version 5020 to temporarily fix a bug with parsing user agents with "+" (plus) sign in the match string. See: https://groups.google.com/forum/#!topic/browscap/s9zGyRBIvK0
+  This also allowed me to remove some user agent overrides from BrowscapWrapper.class.php
+- Added `require_once` for required files
+- removed timers from the code
+- changed getting the user agent string to just calling `$_SERVER['HTTP_USER_AGENT']`
+- added UserAgentInfoConfig class for easier configuration
+- changed the cache classes for easier configuration
+- updated readme file to reflect the changes above, and added more explanation about `->isBanned()`
+
 ### version 1.1.2 - august 12, 2013
 - fix for **critical** bug introduced in verson 1.1 (`UserAgentInfoPeer::getMy()` was checking empty user agent string, and never returning any useful data)
 

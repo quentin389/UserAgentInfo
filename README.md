@@ -8,11 +8,11 @@ See **[list of those projects](#relation-to-other-projects)**.
 UserAgentInfo
 =============
 
-PHP class for parsing user agent strings (HTTP_USER_AGENT). Includes mobile checks, bot checks, browser types/versions and more. Based on browscap, Mobile_Detect and ua-parser. Created for high traffic websites and fast batch processing.
+PHP class for parsing user agent strings (HTTP_USER_AGENT). Includes mobile checks, bots and banned bots checks, browser types/versions and more. Based on browscap, Mobile_Detect and ua-parser. Created for high traffic websites and fast batch processing.
 
 **please note:**
 
-Right now the project is taken directly from the version that works on my website, so there are probably some things I should change to make it easier to adapt in other projects (see [todo list](#todo-list)).
+It's a new project and there are still some major things to do (see: [todo list](#todo-list)).
 
 
 Why another user agent detection class?
@@ -38,10 +38,11 @@ In the first phase of the project, when there is still a lot of important things
 Installing
 -----------
 1. Download.
-2. Change `myUAICacheAdapter` and `myUAITimerAdapter` classes to use cache and timer from your code.
-3. Include required classes if you don't have an autoloader that does that for you. (that should not be necessary, it's on todo list)
-4. Optionally point your php.ini to `imports/browscap.ini`, this way you can stop updating browscap it separately.
-5. Keep the classes up to date.
+2. Choose what cache you want to use and either choose one of the existing cache classes (see `cache/` directory) or write your own class that `implements UaiCacheInterface` and put it in `cache/` directory.
+3. Change UserAgentInfoConfig::CACHE_* variables to reflect your cache choices
+4. `require_once '/your_directory_structure/UserAgentInfo/UserAgentInfoConfig.class.php';`
+5. Optionally point your php.ini to `imports/browscap.ini`, this way you can stop updating browscap it separately.
+6. Keep the classes up to date.
 
 Usage
 -----
@@ -68,7 +69,12 @@ if ($ua->isMobile() && !$ua->isMobileAndroid() && !$ua->isMobileAppleIos())
   echo 'Meh, some other mobile device';
 ```
 
-- `->isBanned()` - it's a bot you probably want to ban right away; it may be an e-mail scrapper, fake user agent (someone is trying to conceal his identity), etc.
+- `->isBanned()` - it's a bot you may want to look at very closely and probably ban; it may be an e-mail scrapper, malicious bot with badly set user agent string, etc.
+**note:**
+`->isbanned` used to be a part of browscap project, but it was removed. Right now the only source of ban information is a list of user agents I've added by hand. It's not a very long list, but I'm working on adding the original list from browscap to the project too.
+
+**important note:**
+When adding a bot to `->isBanned()` list we always verify what the bot is and use our best judgement on whether this bot should be universally banned or not. Having said that, the decisions are still **arbitrary**, so there may be sitiuations in which you wouldn't agree that a certain bot should be banned. In such case feel free to report it as an issue.
 
 - `->isBot()` - a very useful check to both save in your logs and serve slightly different content, for example disable dynamic images loading for spiders. Be careful, never hide or show any user readable content only to bots or you'll get banned from Google!
 
@@ -157,9 +163,9 @@ The used projects are:
 Todo list
 ---------------------------
 - update source parsers once a week
-- include files (do not rely on autoload)
-- simplify getting of HTTP_USER_AGENT, right now it's error prone
+- browscap removed `isBanned` property - fix it by adding `isBanned` from older browscap versions
 - add tests
+- add more example classes to `cache/` (memcache, memcached, APC)
 - should browscap be moved fully to PHP as in https://github.com/garetjax/phpbrowscap ?
   - It would make sense to get rid of the php.ini setting requirement and just be able to fully control what data is served from browscap.
   - If I'm gonna parse browscap.ini I should merge identical entries with just version changed - I'm gonna match using pregs anyway so there is
