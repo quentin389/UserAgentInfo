@@ -6,7 +6,7 @@ function test_formatTime($time)
 }
 
 $start_time = microtime(true);
-require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '../UserAgentInfoConfig.class.php';
+require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '../UserAgentInfoPeer.class.php';
 $start_time = test_formatTime(microtime(true) - $start_time);
 
 $my_time = microtime(true);
@@ -15,7 +15,12 @@ $my_time = test_formatTime(microtime(true) - $my_time);
 
 $user_agents = explode("\n", trim(file_get_contents(UserAgentInfoConfig::$base_dir . UserAgentInfoConfig::DIR_TESTS . DIRECTORY_SEPARATOR . 'user-agent-examples.txt')));
 
-array_unshift($user_agents, $my_ua_string);
+array_unshift($user_agents,
+  $my_ua_string,
+  'Random UA 1 (no match): ' . uniqid(null, true),
+  'Random UA 2 (no match): ' . uniqid(null, true),
+  'Random UA 3 (no match): ' . uniqid(null, true)
+);
 
 $results = array();
 

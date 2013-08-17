@@ -1,6 +1,17 @@
 <?php
 
-class UaiCachePhpredis implements UaiCacheInterface
+/**
+ * Use this class to test UserAgentInfo class without any caching system set up. The values won't be saved between requests.
+ * 
+ * You could use it in production environment, but it's not a good idea,
+ * because retrieving all the information about given user agent from the source parsers is quite slow.
+ * 
+ * @author Mikołaj Misiurewicz <quentin389+uai@gmail.com>
+ * 
+ * @link https://github.com/quentin389/UserAgentInfo
+ *
+ */
+class UaiCacheDebug implements UaiCacheInterface
 {
   protected static $cache = array();
   
@@ -17,20 +28,6 @@ class UaiCachePhpredis implements UaiCacheInterface
   public static function set($key_name, $data)
   {
     self::$cache[$key_name] = $data;
-  }
-  
-  public static function getSize($as_igbinary)
-  {
-    if ($as_igbinary)
-    {
-      $data = igbinary_serialize(self::$cache);
-    }
-    else
-    {
-      $data = serialize(self::$cache);
-    }
-    
-    return strlen($data);
   }
 }
 

@@ -1,5 +1,7 @@
 <?php
 
+require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'UserAgentInfoConfig.class.php';
+
 /**
  * This is the main class of UserAgentInfo which retrieves as much information about give user agent as possible
  * and stitches it together to create UserAgentInfo object.

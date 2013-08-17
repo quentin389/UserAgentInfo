@@ -1,8 +1,16 @@
 <?php
 
+/**
+ * A simple wrapper around Redis cache (http://redis.io/).
+ * 
+ * @author Mikołaj Misiurewicz <quentin389+uai@gmail.com>
+ * 
+ * @link https://github.com/quentin389/UserAgentInfo
+ * 
+ */
 class UaiCachePhpredis implements UaiCacheInterface
 {
-  /*
+  /**
    * @var Redis
    */
   public static $redis;
@@ -33,7 +41,7 @@ class UaiCachePhpredis implements UaiCacheInterface
   {
     self::autoInit();
     
-    // no timeout - UserAgentInfo objects should live forever
+    // no timeout - UserAgentInfo objects should live forever, cache keys are reused if the data change
     self::$redis->set(UserAgentInfoConfig::CACHE_KEY_PREFIX . $key_name, $data);
   }
 }

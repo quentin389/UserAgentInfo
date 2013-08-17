@@ -40,7 +40,7 @@ Installing
 1. Download.
 2. Choose what cache you want to use and either choose one of the existing cache classes (see `cache/` directory) or write your own class that `implements UaiCacheInterface` and put it in `cache/` directory.
 3. Change UserAgentInfoConfig::CACHE_* variables to reflect your cache choices
-4. `require_once '/your_directory_structure/UserAgentInfo/UserAgentInfoConfig.class.php';`
+4. `require_once '/your_directory_structure/UserAgentInfo/UserAgentInfoPeer.class.php';`
 5. Optionally point your php.ini to `imports/browscap.ini`, this way you can stop updating browscap it separately.
 6. Keep the classes up to date.
 
@@ -70,10 +70,13 @@ if ($ua->isMobile() && !$ua->isMobileAndroid() && !$ua->isMobileAppleIos())
 ```
 
 - `->isBanned()` - it's a bot you may want to look at very closely and probably ban; it may be an e-mail scrapper, malicious bot with badly set user agent string, etc.
+
 **note:**
+
 `->isbanned` used to be a part of browscap project, but it was removed. Right now the only source of ban information is a list of user agents I've added by hand. It's not a very long list, but I'm working on adding the original list from browscap to the project too.
 
 **important note:**
+
 When adding a bot to `->isBanned()` list we always verify what the bot is and use our best judgement on whether this bot should be universally banned or not. Having said that, the decisions are still **arbitrary**, so there may be sitiuations in which you wouldn't agree that a certain bot should be banned. In such case feel free to report it as an issue.
 
 - `->isBot()` - a very useful check to both save in your logs and serve slightly different content, for example disable dynamic images loading for spiders. Be careful, never hide or show any user readable content only to bots or you'll get banned from Google!
