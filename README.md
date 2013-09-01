@@ -36,7 +36,8 @@ What's the aim of this project?
   parse your user agents for different purposes.
 
 - To **work fast on enterprise level websites** with high traffic - to achieve that all the required information
-  is retrieved in one go and cached, not (as in some other projects) retrieved on demand.
+  is retrieved in one go and cached, not (as in some other projects) retrieved on demand. The class also
+  leverages PHP opcaches (bytecode caches).
 
 - To **provide a single up to date source** of user agent information - I'm going to update this project as
   long as I need it, so it should be current for quite some time. When you use `UserAgentInfo` you don't need
@@ -60,6 +61,8 @@ Installing
 
 Optionally: Remove `get_browser()` support from your server and turn off updates for `browscap.ini` files.
 You won't have to use browscap via `get_browser()` any more.
+
+**Note:** For best performance use fast caching system and **opcache** (bytecode cache).
 
 Usage
 -----
@@ -119,42 +122,58 @@ using `->isBanned()` and if you think a mistake was made here feel free to repor
 - `->renderInfoAll()` - get all the above values in one string, very useful to include if you show information
   about given user for your internal purposes. For example when users report bugs to via forms on your website.
 
-Performance and scaling (for version 1.2, outdated, will be updated)
+Performance and scaling
 -------------------------
 
-### Test - simple bulk retrieval 1-by-1
-Bulk retrieval of data from [example user agent strings](imports/user-agent-examples.txt) (2494 unique entries).
-Each user agent checked using `UserAgentInfoPeer::getOther($user_agent_string)`.
-Test performed on Ubuntu virtual machine on a high end host machine.
+**All performance tests are done in [ua-speed-tests project](https://github.com/quentin389/ua-speed-tests) -
+look there for details.**
 
-With empty cache:
-- `UserAgentInfoPeer` total time is `156.366 sec (62.7 ms per entry)` of which
-    - `0.704 sec (0.3 ms per entry)` is checking data in the cache (`->get()` calls with empty results)
-    - `153.678 sec (61.7 ms per entry)` is a total parsing time, of which
-        - `111.083 sec (44.6 ms per entry)` is get_browser() time
-        - `0.508 sec (0.2 ms per entry)` is custom browscap strings time
-        - `14.560 sec (5.8 ms per entry)` is ua-parser time
-        - `27.525 sec (11 ms per entry)` is Mobile_Detect time (this was not measured directly, the actual parsing
-          may be much faster)
+### Testing the speed
+Test was run in two modes on data from [example user agent strings](https://github.com/quentin389/ua-speed-tests/blob/2245533619c760a66baee8c6a31ffb954c03dc72/tests/user-agent-examples.txt) (2506 unique entries).
 
-With the cache filled, all entries retrieved from the cache:
-- `UserAgentInfoPeer` total time is `1.161 sec (0.5 ms per entry)` of which
-    - `0.669 (0.3 ms per entry)` is getting data from the cache (this includes unserializing, `UserAgentInfo`
-      objects are returned)
+Each user agent was checked using `UserAgentInfoPeer::getOther($user_agent_string)`.
 
-As you can see, retrieving information from `browscap` is slow (note: I'm using 'standard' browscap file at the
-moment). Even if you try to user only lighter projects - `ua-parser` or `Mobile_Detect` to get a as much info
-about browsers at possible, this will still take some time for each request. This means that the logical way
-to go is to use cache for user agent information. This way **you will be limited only by the speed and
-performance of your cache**.
+The test was performed on Ubuntu virtual machine on a high end host machine.
+
+#### Bulk parsing
+You check all the user agents in one script (usually a cron script). It performs as follows:
+
+With empty cache the average retrieval time is `6.0 ms per entry`, with 99% of requests done in `10.9 ms`.
+
+When the cache is filled the retrieval time is `0.2 ms per entry`, with 99% of requests done in `1.0 ms`.
+
+#### One per script
+This is a typical case of checking user agent information on a website (usually on apache or nginx server).
+It performs as follows:
+
+With empty cache the average retrieval time is `14.9 ms per entry`, with 99% of requests done in `20.4 ms`.
+
+When the cache is filled the retrieval time is `2.5 ms per entry`, with 99% of requests done in `3.7 ms`.
+
+So it's slower than bulk parsing. However, you can go down to almost the same time if you use
+**opcache (bytecode cache)** on your server. It's something you should have installed on your production server
+anyway, as it speed whole PHP by a lot.
+
+Results with opcache on are:
+
+With empty cache the average retrieval time is `7.3 ms per entry`, with 99% of requests done in `13.0 ms`.
+
+When the cache is filled the retrieval time is `0.4 ms per entry`, with 99% of requests done in `1.2 ms`.
+
+#### conclusion
+
+As you can see, while the retrieval of information from the source parsers is quite fast, it's still much
+slower than when getting cached data. This means that the logical way to go is to use the cache. If you also
+have opcache turned on (or are using bulk mode)
+**you will be limited only by the speed and performance of your cache**, without almost any overhead.
 
 If you take that approach, you will be able use all information available from user agent strings at will and
-you won't have to worry about performance problems. Even bulk analysis of user agents won't be an issue
+you won't have to worry about performance problems. Even large bulk analysis of user agents won't be an issue
 (for example, you can preform cron checks on IP+browser pairs to check for bots).
 
 Of course, a question remains, what's the cache hit ratio when you choose to use it for user agent string detection?
 
-### Test - cache hit ratio
+### Test the cache hit ratio
 My `UserAgentInfo` was running for about a week without any changes or cache resets on a set of websites
 with more than 1.5 million user visits per month. During that time:
 - There were an average of 2,478 script calls per minute (each script call uses `UserAgentInfo`), which gives
@@ -162,7 +181,7 @@ with more than 1.5 million user visits per month. During that time:
 - I've accumulated `20,282 UserAgentInfo cached objects`.
 - The total size of those objects when saved in cache is around `12 MB (around 620 bytes per object)`.
 
-That means that the number of calls that did not use cache was below 0.09% which is a great result.
+That means that the number of calls that did not use cache was below 0.09% (one in 1000) which is a great result.
 Moreover, the most popular user agent strings were cached right away.
 
 As you can imagine, the **number of unique user agents does not grow proportionally to the website traffic**.
