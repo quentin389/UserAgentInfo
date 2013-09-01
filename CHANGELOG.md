@@ -12,15 +12,16 @@ Changelog
   * It's standalone / php configuration independent - doesn't require php.ini setting.
   * It leverages opcache to work even faster.
   * It fixes several user agent match errors in `get_browser()`.
-- Moved `BrowscapWrapper.class.php` to `imports` folder. It makes more sense to have it there, even though it's not strictly an external class.
 - Restored browscap source file version checking (was temporarily removed in version 1.2)
-- Removed some user agents from the custom list in `BrowscapWrapper` as they are now identified correctly.
-- Removed a few user agent matches from the custom list of which I wasn't sure if they should be banned or not. 
+- Added cache wrappers for `memcache`, `memcached` and `APC` (pull request https://github.com/quentin389/UserAgentInfo/pull/13 from [Ignas Bernotas](https://github.com/ignasbernotas))
 - Updated Mobile_Detect.php from version 2.6.6 to 2.6.9
   * New detection rules.
   * Some methods and properties are now static.
   * Bug fix: existing headers do not persist when passing new headers array. (not relevant)
 - Removed fix for Mobile_Detect giving '_' in version numbers. (when did that get fixed?)
+- Moved `BrowscapWrapper.class.php` to `imports` folder. It makes more sense to have it there, even though it's not strictly an external class.
+- Removed some user agents from the custom list in `BrowscapWrapper` as they are now identified correctly.
+- Removed a few user agent matches from the custom list of which I wasn't sure if they should be banned or not. 
 
 ### version 1.2 - august 17, 2013
 - Change in browscap.ini version 5020 to temporarily fix a bug with parsing user agents with "+" (plus) sign in the match string. See: https://groups.google.com/forum/#!topic/browscap/s9zGyRBIvK0
