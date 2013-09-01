@@ -13,7 +13,7 @@ Changelog
   * It leverages opcache to work even faster.
   * It fixes several user agent match errors in `get_browser()`.
 - Restored browscap source file version checking (was temporarily removed in version 1.2)
-- Added cache wrappers for `memcache`, `memcached` and `APC` (pull request https://github.com/quentin389/UserAgentInfo/pull/13 from [Ignas Bernotas](https://github.com/ignasbernotas))
+- Added cache wrappers for `memcache`, `memcached` and `APC` (pull request [13](https://github.com/quentin389/UserAgentInfo/pull/13) from [Ignas Bernotas](https://github.com/ignasbernotas))
 - Updated Mobile_Detect.php from version 2.6.6 to 2.6.9
   * New detection rules.
   * Some methods and properties are now static.
