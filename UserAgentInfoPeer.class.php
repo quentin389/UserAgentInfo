@@ -45,7 +45,7 @@ require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'UserAgentInfoConfig.clas
  * 
  * @link https://github.com/quentin389/UserAgentInfo
  * 
- * @version 1.2
+ * @version 1.3
  */
 class UserAgentInfoPeer
 {
@@ -68,14 +68,9 @@ class UserAgentInfoPeer
   const UA_IE_MOBILE = 'IE Mobile';
   
   /**
-   * Usually the version strings are separated by:
+   * Version number parts are separated by dot.
    */
   const SEPARATOR_VERSION = '.';
-  
-  /**
-   * however Mobile_Detect doesn't convert it from:
-   */
-  const SEPARATOR_RAW_VERSION = '_';
   
   /**
    * Used for separating human readable data
@@ -113,9 +108,14 @@ class UserAgentInfoPeer
   const MOBILE_DETECT_TABLET_SUFFIX = 'Tablet'; 
   
   /**
-   * Location for source JSON file for uaparser, relative to this file.
+   * Location of the source JSON file for uaparser, relative to this file.
    */
   const UAPARSER_JSON_LOCATION = 'imports/regexes.json';
+  
+  /**
+   * Location of the source PHP file for phpbrowscap, relative to this file.
+   */
+  const BROWSCAP_CACHE_LOCATION = 'imports/browscap_cache.php';
   
   /**
    * Some names used by uaparser
@@ -193,6 +193,13 @@ class UserAgentInfoPeer
   protected static $local_cache = array();
   
   /**
+   * Instance of BrowscapWrapper
+   * 
+   * @var BrowscapWrapper
+   */
+  protected static $browscap_wrapper;
+  
+  /**
    * Cached Mobile_Detect object
    * 
    * @var Mobile_Detect
@@ -217,6 +224,13 @@ class UserAgentInfoPeer
    * @var string
    */
   protected static $uaparser_source_file;
+  
+  /**
+   * URI of the source php file for phpbrowscap
+   * 
+   * @var string
+   */
+  protected static $browscap_source_file;
   
   /**
    * User agent of the current user, taken from http headers.
@@ -299,10 +313,12 @@ class UserAgentInfoPeer
       return;
     }
     
-    require_once UserAgentInfoConfig::$base_dir . 'UserAgentInfo.class.php';
-    require_once UserAgentInfoConfig::$base_dir . 'BrowscapWrapper.class.php';
-    require_once UserAgentInfoConfig::$base_dir . UserAgentInfoConfig::DIR_CACHE . DIRECTORY_SEPARATOR . 'UaiCacheInterface.php';
-    require_once UserAgentInfoConfig::$base_dir . UserAgentInfoConfig::DIR_CACHE . DIRECTORY_SEPARATOR . UserAgentInfoConfig::CACHE_CLASS_NAME . '.class.php';
+    $base_dir = UserAgentInfoConfig::$base_dir;
+    
+    require_once $base_dir . 'UserAgentInfo.class.php';
+    require_once $base_dir . UserAgentInfoConfig::DIR_IMPORTS . DIRECTORY_SEPARATOR . 'BrowscapWrapper.class.php';
+    require_once $base_dir . UserAgentInfoConfig::DIR_CACHE . DIRECTORY_SEPARATOR . 'UaiCacheInterface.php';
+    require_once $base_dir . UserAgentInfoConfig::DIR_CACHE . DIRECTORY_SEPARATOR . UserAgentInfoConfig::CACHE_CLASS_NAME . '.class.php';
     
     if (!in_array('UaiCacheInterface', class_implements(UserAgentInfoConfig::CACHE_CLASS_NAME, false)))
     {
@@ -314,12 +330,14 @@ class UserAgentInfoPeer
     
     self::$mobile_detect = new Mobile_Detect(self::$fake_md_headers);
     
-    self::$uaparser_source_file = dirname(__FILE__) . DIRECTORY_SEPARATOR . self::UAPARSER_JSON_LOCATION;
+    self::$uaparser_source_file = $base_dir . self::UAPARSER_JSON_LOCATION;
+    
+    self::$browscap_source_file = $base_dir . self::BROWSCAP_CACHE_LOCATION;
     
     // this value should change if anything is changed in the source data; the value is human readable (I don't see a need for md5) 
     self::$data_version = implode(self::SEPARATOR_GENERIC, array(
       self::CLASS_PARSER_VERSION, // modifications in UserAgentInfoPeer parser
-      BrowscapWrapper::getBrowscapVersion(), // changes in browscap original file (not a real version, filesize() is used)
+      filesize(self::$browscap_source_file), // changes in browscap original file (not a real version, filesize() is used)
       BrowscapWrapper::getBrowscapReplacementVersion(), // changes in additional, custom detection rules defined in BrowscapWrapper
       self::$mobile_detect->getScriptVersion(), // nice, Mobile_Detect actually returns a proper version string
       filesize(self::$uaparser_source_file) // changes in uaparser source file; same as browscap, the version is not passed so we use filesize() to approximate
@@ -339,6 +357,8 @@ class UserAgentInfoPeer
     }
     
     require_once UserAgentInfoConfig::$base_dir . UserAgentInfoConfig::DIR_IMPORTS . DIRECTORY_SEPARATOR . 'uaparser.php';
+    
+    self::$browscap_wrapper = new BrowscapWrapper(self::$browscap_source_file);
     
     self::$uaparser = new UAParser(self::$uaparser_source_file);
     
@@ -417,7 +437,7 @@ class UserAgentInfoPeer
   {
     // 1. >>> retrieve the data from sources
     
-    $bc = BrowscapWrapper::getInfo($user_agent);
+    $bc = self::$browscap_wrapper->getInfo($user_agent);
     
     self::$mobile_detect->setUserAgent($user_agent);
     $md = self::$mobile_detect;
@@ -431,7 +451,7 @@ class UserAgentInfoPeer
     $md_is_mobile = $md->isMobile();
     $md_browser = $md_is_mobile ? self::parseBrowserMd($md) : false;
     
-    $is_mobile = $md_is_mobile || $bc->ismobiledevice;
+    $is_mobile = $md_is_mobile || $bc['isMobileDevice'];
     
     if (false === strpos($user_agent, 'WSCommand'))
     {
@@ -481,7 +501,7 @@ class UserAgentInfoPeer
     $architecture = self::parseArchitecture($user_agent);
     
     // trying to mark as many bots as possible
-    $is_bot = $bc->crawler || self::UAPARSER_BOT_NAME == $uap->device->family || $md->is(self::MOBILE_DETECT_BOT_NAME) || $md->is(self::MOBILE_DETECT_MOBILE_BOT_NAME);
+    $is_bot = $bc['Crawler'] || self::UAPARSER_BOT_NAME == $uap->device->family || $md->is(self::MOBILE_DETECT_BOT_NAME) || $md->is(self::MOBILE_DETECT_MOBILE_BOT_NAME);
     
     // that's an interesting feature, so why not include it
     $mobile_grade = $md_is_mobile && !empty($md_browser['name']) ? $md->mobileGrade() : '';
@@ -494,7 +514,7 @@ class UserAgentInfoPeer
       // this is a mobile user (not a mobile bot) and was nicely and specifically identified by Mobile_Detect or uaparser
       $id_level = self::ID_LEVEL_FULL;
     }
-    elseif (BrowscapWrapper::DEFAULT_NAME != $bc->browser)
+    elseif (BrowscapWrapper::DEFAULT_NAME != $bc['Browser'])
     {
       // it's not a mobile user but it was identified by browscap, that's enough to provide full information
       $id_level = self::ID_LEVEL_FULL;
@@ -534,11 +554,11 @@ class UserAgentInfoPeer
         'os_major' => (string) @$os['major'],
         'os_minor' => (string) @$os['minor'],
         'os_patch' => (string) @$os['patch'],
-        'is_banned' => (boolean) @$bc->isbanned,
+        'is_banned' => (boolean) $bc['isBanned'],
         'is_mobile' => $is_mobile,
         'is_mobile_tablet' => $is_mobile && $md->isTablet(),
         'is_bot' => $is_bot,
-        'is_bot_reader' => $is_bot && $bc->issyndicationreader,
+        'is_bot_reader' => $is_bot && $bc['isSyndicationReader'],
         'is_64_bit_os' => (64 == @$architecture['os']),
         'is_64_bit_browser' => (64 == @$architecture['browser']),
         'mobile_grade' => $mobile_grade
@@ -636,14 +656,14 @@ class UserAgentInfoPeer
   /**
    * Identify the browser based on browscap data
    * 
-   * @param stdClass $bc data from browscap
+   * @param array $bc data from browscap
    * 
    * @return array or false
    */
-  protected static function parseBrowserBc(stdClass $bc)
+  protected static function parseBrowserBc(array $bc)
   {
-    $family = $bc->browser;
-    $version = $bc->version;
+    $family = $bc['Browser'];
+    $version = $bc['Version'];
     
     if (BrowscapWrapper::DEFAULT_NAME == $family)
     {
@@ -656,14 +676,14 @@ class UserAgentInfoPeer
   /**
    * Identify the os based on browscap data
    * 
-   * @param stdClass $bc data from browscap
+   * @param array $bc data from browscap
    * 
    * @return array or false
    */
-  protected static function parseOsBc(stdClass $bc)
+  protected static function parseOsBc(array $bc)
   {
-    $family = $bc->platform;
-    $version = (string) @$bc->platform_version;
+    $family = $bc['Platform'];
+    $version = $bc['Platform_Version'];
     
     if (BrowscapWrapper::DEFAULT_OS == $family)
     {
@@ -720,7 +740,7 @@ class UserAgentInfoPeer
       return false;
     }
     
-    $version = explode(self::SEPARATOR_VERSION, str_replace(self::SEPARATOR_RAW_VERSION, self::SEPARATOR_VERSION, $version), 3);
+    $version = explode(self::SEPARATOR_VERSION, $version, 3);
     
     // sometimes a version like 0.0 is returned, we need to remove that
     if (('' == $version[0] || '0' == $version[0]) && ('' == @$version[1] || '0' == @$version[1]) && ('' == @$version[2] || '0' == @$version[2]))

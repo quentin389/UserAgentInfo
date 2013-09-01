@@ -6,15 +6,32 @@ See **[list of those projects](README.md#relation-to-other-projects)**.
 Changelog
 =========
 
+### version 1.3 - september 1, 2013
+- Migrated from `get_browser()` to `phpbrowscap` class:
+  * It's much faster than `get_browser()`.
+  * It's standalone / php configuration independent - doesn't require php.ini setting.
+  * It leverages opcache to work even faster.
+  * It fixes several user agent match errors in `get_browser()`.
+- Moved `BrowscapWrapper.class.php` to `imports` folder. It makes more sense to have it there, even though it's not strictly an external class.
+- Restored browscap source file version checking (was temporarily removed in version 1.2)
+- Removed some user agents from the custom list in `BrowscapWrapper` as they are now identified correctly.
+- Removed a few user agent matches from the custom list of which I wasn't sure if they should be banned or not. 
+- Updated Mobile_Detect.php from version 2.6.6 to 2.6.9
+  * New detection rules.
+  * Some methods and properties are now static.
+  * Bug fix: existing headers do not persist when passing new headers array. (not relevant)
+- Removed fix for Mobile_Detect giving '_' in version numbers. (when did that get fixed?)
+
 ### version 1.2 - august 17, 2013
 - Change in browscap.ini version 5020 to temporarily fix a bug with parsing user agents with "+" (plus) sign in the match string. See: https://groups.google.com/forum/#!topic/browscap/s9zGyRBIvK0
   This also allowed me to remove some user agent overrides from BrowscapWrapper.class.php
-- Added `require_once` for required files
-- removed timers from the code
-- changed getting the user agent string to just calling `$_SERVER['HTTP_USER_AGENT']`
-- added UserAgentInfoConfig class for easier configuration
-- changed the cache classes for easier configuration
-- updated readme file to reflect the changes above, and added more explanation about `->isBanned()`
+- Added `require_once` for required files.
+- Removed timers from the code.
+- Changed getting the user agent string to just calling `$_SERVER['HTTP_USER_AGENT']`.
+- Added UserAgentInfoConfig class for easier configuration.
+- Changed the cache classes for easier configuration.
+- Updated readme file to reflect the changes above, and added more explanation about `->isBanned()`.
+- Temporary fix for issue https://github.com/quentin389/UserAgentInfo/issues/2
 
 ### version 1.1.2 - august 12, 2013
 - fix for **critical** bug introduced in verson 1.1 (`UserAgentInfoPeer::getMy()` was checking empty user agent string, and never returning any useful data)

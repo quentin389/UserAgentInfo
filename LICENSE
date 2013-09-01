@@ -24,6 +24,9 @@ UserAgentInfo uses other project to provide source data:
 
 * Browscap project - http://tempdownloads.browserscap.com/
 
+* GaretJax phpbrowscap - https://github.com/GaretJax/phpbrowscap - licensed under the MIT License
+  (https://github.com/GaretJax/phpbrowscap/blob/master/LICENSE)
+
 * Mobile_Detect - https://github.com/serbanghita/Mobile-Detect - licensed under the MIT License
   (https://github.com/serbanghita/Mobile-Detect/blob/master/LICENSE.txt)
 

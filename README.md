@@ -8,11 +8,13 @@ See **[list of those projects](#relation-to-other-projects)**.
 UserAgentInfo
 =============
 
-PHP class for parsing user agent strings (HTTP_USER_AGENT). Includes mobile checks, bots and banned bots checks, browser types/versions and more. Based on browscap, Mobile_Detect and ua-parser. Created for high traffic websites and fast batch processing.
+PHP class for parsing user agent strings (HTTP_USER_AGENT). Includes mobile checks, bots and banned bots checks, browser types/versions and more. Based on browscap (via phpbrowscap), Mobile_Detect and ua-parser. Created for high traffic websites and fast batch processing.
+
+This class doesn't use any php.ini settings, so it can be deployed without changing server configuration.
 
 **please note:**
 
-It's a new project and there are still some major things to do (see: [todo list](#todo-list)).
+It's a new project and there are still some major things to do (see: [todo list](#todo-list) and the [issues list](https://github.com/quentin389/UserAgentInfo/issues)).
 
 
 Why another user agent detection class?
@@ -41,8 +43,9 @@ Installing
 2. Choose what cache you want to use and either choose one of the existing cache classes (see `cache/` directory) or write your own class that `implements UaiCacheInterface` and put it in `cache/` directory.
 3. Change UserAgentInfoConfig::CACHE_* variables to reflect your cache choices
 4. `require_once '/your_directory_structure/UserAgentInfo/UserAgentInfoPeer.class.php';`
-5. Optionally point your php.ini to `imports/browscap.ini`, this way you can stop updating browscap it separately.
-6. Keep the classes up to date.
+5. Keep the classes up to date.
+
+Optionally: Remove `get_browser()` support from your server and turn off updates for `browscap.ini` files. You won't have to use browscap via `get_browser()` any more.
 
 Usage
 -----
@@ -87,7 +90,7 @@ When adding a bot to `->isBanned()` list we always verify what the bot is and us
 
 - `->renderInfoAll()` - get all the above values in one string, very useful to include if you show information about given user for your internal purposes. For example when users report bugs to via forms on your website.
 
-Performance and scaling
+Performance and scaling (for version 1.2)
 -------------------------
 
 ### Test - simple bulk retrieval 1-by-1
@@ -153,7 +156,9 @@ UserAgentInfo relies on multiple other projects to get its user agent informatio
 
 The used projects are:
 
-- browscap (bc) - http://tempdownloads.browserscap.com/ - browscap contains a huge database of incredibly detailed specific user agents information but it sucks with newer user agents and sucks even more for mobile detection.
+- browscap - http://tempdownloads.browserscap.com/ - browscap contains a huge database of incredibly detailed specific user agents information but it sucks with newer user agents and sucks even more for mobile detection.
+
+- phpbrowscap (bc) - https://github.com/GaretJax/phpbrowscap - phpbrowscap is used to deliver the results from `browscap` source files. (phpbrowscap classes are not included, parsing is copied to `BrowscapWrapper` class)
 
 - Mobile_Detect (md) - https://github.com/serbanghita/Mobile-Detect - it detects mobile device types with very high precision.
 
@@ -161,23 +166,14 @@ The used projects are:
 
 - Some information is generated directly in UserAgentInfo. Currently those are two things:
   - Additional user agents identified in browscap format (see BrowscapWrapper class).
-  -  Browser and operating system architecture information (see self::parseArchitecture()).
+  - Browser and operating system architecture information (see self::parseArchitecture()).
 
 Todo list
 ---------------------------
 - update source parsers once a week
-- browscap removed `isBanned` property - fix it by adding `isBanned` from older browscap versions
-- add tests
-- add more example classes to `cache/` (memcache, memcached, APC)
-- should browscap be moved fully to PHP as in https://github.com/garetjax/phpbrowscap ?
-  - It would make sense to get rid of the php.ini setting requirement and just be able to fully control what data is served from browscap.
-  - If I'm gonna parse browscap.ini I should merge identical entries with just version changed - I'm gonna match using pregs anyway so there is
-  - no need to have 20 entries instead of 1.
 - should I standardize OS name and move Windows version to ->version?
 - should device family be changed to device manufacturer and version to name (same as in full browscap)?
-- request to add version number to browscap get_browser()
 - request to add version number to uaparser json file
-- test full browscap file and see if it makes sense to use it, if so, add it to device detection and add 'rendering engine' property
 - see which PHP version is required to run the script. PHP 5.0 would be the best, there is no need to push for 5.3. However, right now it may not be compatible with older PHP versions, as it was created on PHP 5.4.
 - Internet Explorer vs. Chrome Frame
 - Add batch retrieval from cache (batch save could also be implemented, but that seems kinda weird... although... O.o)
