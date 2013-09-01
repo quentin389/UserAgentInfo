@@ -6,7 +6,7 @@ See **[list of those projects](README.md#relation-to-other-projects)**.
 Changelog
 =========
 
-### version 1.3 - september 1, 2013
+### version 1.3 - September 1, 2013
 - Migrated from `get_browser()` to `phpbrowscap` class:
   * It's much faster than `get_browser()`.
   * It's standalone / php configuration independent - doesn't require php.ini setting.
@@ -23,7 +23,7 @@ Changelog
 - Removed some user agents from the custom list in `BrowscapWrapper` as they are now identified correctly.
 - Removed a few user agent matches from the custom list of which I wasn't sure if they should be banned or not. 
 
-### version 1.2 - august 17, 2013
+### version 1.2 - August 17, 2013
 - Change in browscap.ini version 5020 to temporarily fix a bug with parsing user agents with "+" (plus) sign in the match string. See: https://groups.google.com/forum/#!topic/browscap/s9zGyRBIvK0
   This also allowed me to remove some user agent overrides from BrowscapWrapper.class.php
 - Added `require_once` for required files.
@@ -34,16 +34,16 @@ Changelog
 - Updated readme file to reflect the changes above, and added more explanation about `->isBanned()`.
 - Temporary fix for issue https://github.com/quentin389/UserAgentInfo/issues/2
 
-### version 1.1.2 - august 12, 2013
+### version 1.1.2 - August 12, 2013
 - fix for **critical** bug introduced in verson 1.1 (`UserAgentInfoPeer::getMy()` was checking empty user agent string, and never returning any useful data)
 
-### version 1.1.1 - august 10, 2013
+### version 1.1.1 - August 10, 2013
 A small update to detection rules.
 - updated regexes.json in ua-parser
 - updated BrowscapWrapper rules for "Ruby" and "WSCommand"
 - removed '@version' string from all but one file
 
-### version 1.1 - august 6, 2013
+### version 1.1 - August 6, 2013
 
 - Updated Mobile_Detect.php from version 2.6.3 to 2.6.6:
   - New detection rules.
