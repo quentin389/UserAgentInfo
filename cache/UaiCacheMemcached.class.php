@@ -1,22 +1,22 @@
 <?php
 
 /**
- * A simple wrapper around Redis cache (http://redis.io/).
+ * A simple wrapper around Memcached (http://memcached.org/)
  * 
- * @author Mikołaj Misiurewicz <quentin389+uai@gmail.com>
+ * @author Ignas Bernotas
  * 
- * @link https://github.com/quentin389/UserAgentInfo
+ * @link https://github.com/ignasbernotas/UserAgentInfo
  * 
  */
 class UaiCacheMemcached implements UaiCacheInterface
 {
   /**
-   * @var Redis
+   * @var $instance
    */
   public static $instance = null;
   
   /**
-   * If you want to use your own instance of Redis then pass it to UaiCachePhpredis::$redis before calling UserAgentInfoPeer for the first time.
+   * If you want to use your own instance of Memcached then pass it to UaiCacheMemcached::$instance before calling UserAgentInfoPeer for the first time.
    */
   public static function autoInit()
   {
@@ -24,7 +24,7 @@ class UaiCacheMemcached implements UaiCacheInterface
     {
       return;
     }
-
+    // since some servers may have either Memcached or Memcache extension installed, we need to check it
     if(class_exists('Memcache', false)) {
         $extension = 'Memcache';
     } elseif(class_exists('Memcached', false)) {
